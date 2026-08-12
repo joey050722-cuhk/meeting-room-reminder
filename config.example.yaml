@@ -122,7 +122,7 @@ wecom:
   evening_reminder_time: '22:30'
   final_reminder_time: '23:50'
 serverchan:
-  enabled: false
+  enabled: true
   sendkey: ''
 pushplus:
   enabled: false
