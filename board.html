@@ -1,0 +1,176 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+body{font-family:-apple-system,sans-serif;margin:0;background:#f5f6fa;padding:20px}
+h1{color:#2c3e50;text-align:center}
+.board{display:flex;flex-wrap:wrap;gap:15px;justify-content:center;margin-top:20px}
+.card{background:white;border-radius:12px;padding:18px;width:300px;box-shadow:0 2px 10px rgba(0,0,0,.1);border-top:4px solid #3498db}
+.card.large{border-top-color:#f39c12}
+.card.urgent{border-top-color:#e74c3c;background:#fff5f5}
+.date-badge{display:inline-block;background:#667eea;color:white;padding:4px 12px;border-radius:20px;font-size:.85em;font-weight:bold}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.8em;margin:2px}
+.tag-l{background:#f39c12;color:#fff}
+.tag-s{background:#3498db;color:#fff}
+.tag-u{background:#e74c3c;color:#fff;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.mname{font-size:1.2em;font-weight:bold;margin:10px 0 5px;color:#2c3e50}
+.mtime{color:#7f8c8d;font-size:.9em}
+.rooms{margin-top:10px;font-size:.9em;color:#34495e;background:#f8f9fa;padding:8px;border-radius:6px}
+.note{margin-top:8px;font-size:.85em;color:#e67e22}
+</style></head><body>
+<h1>🏢 未来14天抢会议室看板</h1>
+<div class=board><div class="card urgent">
+<div><span class=date-badge>📅 预订日 2026-08-12 (周三)</span><span class="tag tag-u">紧急</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-19 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 10小, 11小, 12小, 13小<br>⏰ 提前7天 | 最长1.5h</div>
+
+</div><div class="card large urgent">
+<div><span class=date-badge>📅 预订日 2026-08-12 (周三)</span><span class="tag tag-u">紧急</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-19 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-13 (周四)</span></div>
+<div class=mname>Gate Meeting</div>
+<div class=mtime>🗓️ 会议: 2026-08-20 (周四) 15:00-16:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><span class="tag tag-u">必须大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+<div class=note>📝 Gate会议，必须大会议室</div>
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-15 (周六)</span></div>
+<div class=mname>CBEC WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-25 (周二) 10:30-12:30</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 6大, 7大<br>⏰ 提前10天 | 最长2.0h</div>
+<div class=note>📝 重要会议，尽量预约大会议室</div>
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-15 (周六)</span></div>
+<div class=mname>Pre-gate Meeting</div>
+<div class=mtime>🗓️ 会议: 2026-08-25 (周二) 15:00-16:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><span class="tag tag-u">必须大会议室</span><br>可选: 6大, 7大<br>⏰ 提前10天 | 最长2.0h</div>
+<div class=note>📝 Gate会议，必须大会议室</div>
+</div><div class="card">
+<div><span class=date-badge>📅 预订日 2026-08-16 (周日)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-19 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 5小, 6小, 7小, 8小, 9小, 健身房<br>⏰ 提前3天 | 最长1.5h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-16 (周日)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-26 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 6大, 7大<br>⏰ 提前10天 | 最长2.0h</div>
+
+</div><div class="card">
+<div><span class=date-badge>📅 预订日 2026-08-16 (周日)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-26 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 3大, 培训室, 瑜伽室<br>⏰ 提前10天 | 最长4.0h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-17 (周一)</span></div>
+<div class=mname>Gate Meeting</div>
+<div class=mtime>🗓️ 会议: 2026-08-27 (周四) 15:00-16:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><span class="tag tag-u">必须大会议室</span><br>可选: 6大, 7大<br>⏰ 提前10天 | 最长2.0h</div>
+<div class=note>📝 Gate会议，必须大会议室</div>
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-18 (周二)</span></div>
+<div class=mname>CBEC WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-25 (周二) 10:30-12:30</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+<div class=note>📝 重要会议，尽量预约大会议室</div>
+</div><div class="card">
+<div><span class=date-badge>📅 预订日 2026-08-18 (周二)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-19 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 2小, 3小, 4小<br>⏰ 提前1天 | 最长1.5h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-18 (周二)</span></div>
+<div class=mname>Pre-gate Meeting</div>
+<div class=mtime>🗓️ 会议: 2026-08-25 (周二) 15:00-16:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><span class="tag tag-u">必须大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+<div class=note>📝 Gate会议，必须大会议室</div>
+</div><div class="card">
+<div><span class=date-badge>📅 预订日 2026-08-19 (周三)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-26 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 10小, 11小, 12小, 13小<br>⏰ 提前7天 | 最长1.5h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-19 (周三)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-26 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-20 (周四)</span></div>
+<div class=mname>Gate Meeting</div>
+<div class=mtime>🗓️ 会议: 2026-08-27 (周四) 15:00-16:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><span class="tag tag-u">必须大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+<div class=note>📝 Gate会议，必须大会议室</div>
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-22 (周六)</span></div>
+<div class=mname>CBEC WIP</div>
+<div class=mtime>🗓️ 会议: 2026-09-01 (周二) 10:30-12:30</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 6大, 7大<br>⏰ 提前10天 | 最长2.0h</div>
+<div class=note>📝 重要会议，尽量预约大会议室</div>
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-22 (周六)</span></div>
+<div class=mname>Pre-gate Meeting</div>
+<div class=mtime>🗓️ 会议: 2026-09-01 (周二) 15:00-16:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><span class="tag tag-u">必须大会议室</span><br>可选: 6大, 7大<br>⏰ 提前10天 | 最长2.0h</div>
+<div class=note>📝 Gate会议，必须大会议室</div>
+</div><div class="card">
+<div><span class=date-badge>📅 预订日 2026-08-23 (周日)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-26 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 5小, 6小, 7小, 8小, 9小, 健身房<br>⏰ 提前3天 | 最长1.5h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-23 (周日)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-09-02 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 6大, 7大<br>⏰ 提前10天 | 最长2.0h</div>
+
+</div><div class="card">
+<div><span class=date-badge>📅 预订日 2026-08-23 (周日)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-09-02 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 3大, 培训室, 瑜伽室<br>⏰ 提前10天 | 最长4.0h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-24 (周一)</span></div>
+<div class=mname>Gate Meeting</div>
+<div class=mtime>🗓️ 会议: 2026-09-03 (周四) 15:00-16:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><span class="tag tag-u">必须大会议室</span><br>可选: 6大, 7大<br>⏰ 提前10天 | 最长2.0h</div>
+<div class=note>📝 Gate会议，必须大会议室</div>
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-25 (周二)</span></div>
+<div class=mname>CBEC WIP</div>
+<div class=mtime>🗓️ 会议: 2026-09-01 (周二) 10:30-12:30</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+<div class=note>📝 重要会议，尽量预约大会议室</div>
+</div><div class="card">
+<div><span class=date-badge>📅 预订日 2026-08-25 (周二)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-08-26 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 2小, 3小, 4小<br>⏰ 提前1天 | 最长1.5h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-25 (周二)</span></div>
+<div class=mname>Pre-gate Meeting</div>
+<div class=mtime>🗓️ 会议: 2026-09-01 (周二) 15:00-16:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><span class="tag tag-u">必须大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+<div class=note>📝 Gate会议，必须大会议室</div>
+</div><div class="card">
+<div><span class=date-badge>📅 预订日 2026-08-26 (周三)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-09-02 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-s">小会议室</span><br>可选: 10小, 11小, 12小, 13小<br>⏰ 提前7天 | 最长1.5h</div>
+
+</div><div class="card large">
+<div><span class=date-badge>📅 预订日 2026-08-26 (周三)</span></div>
+<div class=mname>NT WIP</div>
+<div class=mtime>🗓️ 会议: 2026-09-02 (周三) 11:00-12:00</div>
+<div class=rooms><span class="tag tag-l">大会议室</span><br>可选: 4大, 5大<br>⏰ 提前7天 | 最长2.0h</div>
+
+</div></div></body></html>

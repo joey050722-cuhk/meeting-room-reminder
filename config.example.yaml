@@ -1,0 +1,146 @@
+meeting_room_rules:
+  small_rooms_1day:
+    rooms:
+    - 2小
+    - 3小
+    - 4小
+    advance_days: 1
+    max_duration_hours: 1.5
+    priority: 1
+  small_rooms_3days:
+    rooms:
+    - 5小
+    - 6小
+    - 7小
+    - 8小
+    - 9小
+    - 健身房
+    advance_days: 3
+    max_duration_hours: 1.5
+    priority: 2
+  small_rooms_7days:
+    rooms:
+    - 10小
+    - 11小
+    - 12小
+    - 13小
+    advance_days: 7
+    max_duration_hours: 1.5
+    priority: 3
+  large_rooms_3days:
+    rooms:
+    - 4大
+    advance_days: 3
+    max_duration_hours: 2.0
+    room_type: large
+    priority: 4
+  large_rooms_7days:
+    rooms:
+    - 5大
+    advance_days: 7
+    max_duration_hours: 2.0
+    room_type: large
+    priority: 5
+  large_rooms_10days:
+    rooms:
+    - 6大
+    - 7大
+    advance_days: 10
+    max_duration_hours: 2.0
+    room_type: large
+    priority: 6
+  special_rooms_10days:
+    rooms:
+    - 3大
+    - 培训室
+    - 瑜伽室
+    advance_days: 10
+    max_duration_hours: 4.0
+    room_type: special
+    priority: 7
+weekly_meetings:
+- name: CBEC WIP
+  day_of_week: 1
+  start_time: '10:30'
+  end_time: '12:30'
+  duration_hours: 2.0
+  preferred_room_type: large
+  fallback_room_type: small
+  demand_team: ANC-NPD
+  notes: 重要会议，尽量预约大会议室
+- name: NT WIP
+  day_of_week: 2
+  start_time: '11:00'
+  end_time: '12:00'
+  duration_hours: 1.0
+  preferred_room_type: any
+  fallback_room_type: small
+  demand_team: ANC-NPD
+- name: Pre-gate Meeting
+  day_of_week: 1
+  start_time: '15:00'
+  end_time: '16:00'
+  duration_hours: 1.0
+  preferred_room_type: large
+  require_large: true
+  notes: Gate会议，必须大会议室
+- name: Gate Meeting
+  day_of_week: 3
+  start_time: '15:00'
+  end_time: '16:00'
+  duration_hours: 1.0
+  preferred_room_type: large
+  require_large: true
+  notes: Gate会议，必须大会议室
+reminder_settings:
+  reminder_time: 00:00
+  early_reminder_minutes: 10
+  notification:
+    desktop: true
+    console: true
+    sound: true
+  backup_strategy:
+    enabled: true
+    time_slots:
+    - offset_minutes: -30
+    - offset_minutes: 0
+    - offset_minutes: 30
+    max_attempts: 3
+email:
+  enabled: false
+  smtp_server: smtp.office365.com
+  smtp_port: 587
+  sender: jocelyn.zhong@hh.global
+  password: ''
+  recipients:
+  - jocelyn.zhong@hh.global
+  evening_reminder_time: '22:30'
+  final_reminder_time: '23:50'
+wecom:
+  enabled: false
+  webhook_url: ''
+  evening_reminder_time: '22:30'
+  final_reminder_time: '23:50'
+serverchan:
+  enabled: false
+  sendkey: ''
+pushplus:
+  enabled: false
+  token: ''
+room_emails:
+  4大: 请填入4大会议室资源邮箱
+  5大: 请填入5大会议室资源邮箱
+  6大: 请填入6大会议室资源邮箱
+  7大: 请填入7大会议室资源邮箱
+  2小: 请填入2小会议室资源邮箱
+  3小: 请填入3小会议室资源邮箱
+  4小: 请填入4小会议室资源邮箱
+  5小: 请填入5小会议室资源邮箱
+  6小: 请填入6小会议室资源邮箱
+  7小: 请填入7小会议室资源邮箱
+  8小: 请填入8小会议室资源邮箱
+  9小: 请填入9小会议室资源邮箱
+  10小: 请填入10小会议室资源邮箱
+  11小: 请填入11小会议室资源邮箱
+  12小: 请填入12小会议室资源邮箱
+  13小: 请填入13小会议室资源邮箱

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#667eea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="抢会议室">
+<title>🏢 抢会议室提醒</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏢</text></svg>">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Segoe UI',sans-serif;
+  background:linear-gradient(160deg,#667eea 0%,#764ba2 100%); min-height:100vh; padding:12px 12px 30px; color:#333; }
+.header { text-align:center; color:#fff; padding:18px 10px 14px; }
+.header h1 { font-size:1.5em; text-shadow:0 2px 4px rgba(0,0,0,.2); }
+.header .date { font-size:.85em; opacity:.9; margin-top:4px; }
+.countdown { background:rgba(255,255,255,.15); border-radius:16px; padding:16px;
+  text-align:center; color:#fff; margin:6px 0 14px; border:1px solid rgba(255,255,255,.25); }
+.countdown .label { font-size:.8em; opacity:.9; }
+.countdown .num { font-size:2.6em; font-weight:800; font-variant-numeric:tabular-nums;
+  letter-spacing:2px; text-shadow:0 2px 8px rgba(0,0,0,.3); }
+.countdown .sub { font-size:.8em; opacity:.9; margin-top:2px; }
+.card { background:#fff; border-radius:14px; padding:16px; margin-bottom:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,.12); }
+.card h2 { font-size:1.05em; color:#667eea; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+.item { border-left:4px solid #3498db; padding:10px 12px; margin-bottom:8px;
+  background:#f8f9ff; border-radius:0 10px 10px 0; }
+.item.urgent { border-left-color:#e74c3c; background:#fff5f5; }
+.item.large { border-left-color:#f39c12; }
+.item .name { font-weight:700; font-size:1.02em; }
+.item .meta { font-size:.85em; color:#666; margin-top:3px; line-height:1.5; }
+.tag { display:inline-block; padding:1px 8px; border-radius:10px; font-size:.75em; margin-left:4px; }
+.tag-l { background:#f39c12; color:#fff; }
+.tag-s { background:#3498db; color:#fff; }
+.tag-must { background:#e74c3c; color:#fff; animation:pulse 1.2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+.rule-table { width:100%; border-collapse:collapse; font-size:.82em; }
+.rule-table th,.rule-table td { padding:7px 8px; text-align:left; border-bottom:1px solid #eee; }
+.rule-table th { background:#f0f2ff; color:#667eea; }
+.rule-table tr.hl td { color:#e74c3c; font-weight:700; }
+.btn { width:100%; padding:13px; border:none; border-radius:12px; font-size:1em;
+  font-weight:600; color:#fff; cursor:pointer; margin:4px 0; }
+.btn-blue { background:#667eea; } .btn-green { background:#27ae60; } .btn-orange { background:#e67e22; }
+.empty { text-align:center; color:#999; padding:20px; font-size:.9em; }
+.foot { text-align:center; color:rgba(255,255,255,.8); font-size:.75em; margin-top:14px; line-height:1.8; }
+.badge-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏢 抢会议室提醒</h1>
+  <div class="date" id="nowDate"></div>
+</div>
+
+<div class="countdown">
+  <div class="label" id="cdLabel">⏳ 距离下次开抢</div>
+  <div class="num" id="cdNum">--:--:--</div>
+  <div class="sub" id="cdSub">明天 00:00 开放预订</div>
+</div>
+
+<div class="card">
+  <h2>🔥 今天要抢（预约日）</h2>
+  <div id="todayList"><div class="empty">今天没有可预约的会议 🎉</div></div>
+</div>
+
+<div class="card">
+  <h2>⏰ 明天预告</h2>
+  <div id="tomorrowList"><div class="empty">明天没有可预约的会议</div></div>
+</div>
+
+<div class="card">
+  <h2>📅 未来7天安排</h2>
+  <div id="weekList"></div>
+</div>
+
+<div class="card">
+  <h2>📋 会议室规则</h2>
+  <table class="rule-table">
+    <tr><th>会议室</th><th>提前</th><th>时长</th></tr>
+    <tr><td>2/3/4小</td><td>1天</td><td>1.5h</td></tr>
+    <tr><td>5-9小&健身房</td><td>3天</td><td>1.5h</td></tr>
+    <tr><td>10-13小</td><td>7天</td><td>1.5h</td></tr>
+    <tr class="hl"><td>4大</td><td>3天</td><td>2h</td></tr>
+    <tr><td>5大</td><td>7天</td><td>2h</td></tr>
+    <tr class="hl"><td>6/7大</td><td>10天</td><td>2h</td></tr>
+    <tr><td>3大&培训&瑜伽</td><td>10天</td><td>4h</td></tr>
+  </table>
+</div>
+
+<button class="btn btn-green" id="notifyBtn" onclick="enableNotify()">🔔 开启到点提醒（通知+响铃+震动）</button>
+<button class="btn btn-orange" onclick="testAlarm()">🧪 测试闹钟效果</button>
+<button class="btn btn-blue" onclick="location.reload()">🔄 刷新</button>
+
+<div class="foot">
+  💡 提示：添加到手机主屏幕，像App一样打开<br>
+  iOS：Safari 分享 → 添加到主屏幕<br>
+  Android：浏览器菜单 → 添加到主屏幕<br>
+  ⚠️ 保持页面打开才能到点响铃；页面关闭时请配合邮件提醒
+</div>
+
+<script>
+// ============================================================
+// 配置（与 config.yaml 一致，可自行修改）
+// ============================================================
+const CONFIG = {
+  reminderTime: "00:00",           // 凌晨开抢时间
+  emailEvening: "22:30",           // 邮件晚间预告
+  emailFinal: "23:50",             // 邮件临开抢
+  meetings: [
+    { name:"CBEC WIP", day:1, start:"10:30", end:"12:30", prefer:"large", require:false, note:"重要会议，尽量大会议室" },   // day: 0=周一,1=周二...
+    { name:"NT WIP", day:2, start:"11:00", end:"12:00", prefer:"any", require:false, note:"" },
+    { name:"Pre-gate Meeting", day:1, start:"15:00", end:"16:00", prefer:"large", require:true, note:"Gate会议，必须大会议室" },
+    { name:"Gate Meeting", day:3, start:"15:00", end:"16:00", prefer:"large", require:true, note:"Gate会议，必须大会议室" }
+  ],
+  rules: [
+    { rooms:["2小","3小","4小"], days:1, type:"small" },
+    { rooms:["5小","6小","7小","8小","9小","健身房"], days:3, type:"small" },
+    { rooms:["10小","11小","12小","13小"], days:7, type:"small" },
+    { rooms:["4大"], days:3, type:"large" },
+    { rooms:["5大"], days:7, type:"large" },
+    { rooms:["6大","7大"], days:10, type:"large" },
+    { rooms:["3大","培训室","瑜伽室"], days:10, type:"special" }
+  ]
+};
+
+// ============================================================
+// 计算逻辑
+// ============================================================
+const WEEKDAYS = ['周日','周一','周二','周三','周四','周五','周六'];
+const today = new Date();
+today.setHours(0,0,0,0);
+
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate()+n); return x; }
+function fmt(d) { return `${d.getMonth()+1}/${d.getDate()}`; }
+function fmtFull(d) { return `${d.getMonth()+1}/${d.getDate()} ${WEEKDAYS[d.getDay()]}`; }
+
+// 计算某会议在某日期之前需要预约的项
+function calcItems() {
+  const items = [];
+  CONFIG.meetings.forEach(m => {
+    const targetJS = (m.day + 1) % 7;   // 0=周一 → JS getDay()格式(0=周日)
+    for (let w = 0; w < 4; w++) {
+      const meetingDate = addDays(today, w*7 + ((targetJS - today.getDay() + 7) % 7 || 7));
+      // 未来8天内的会议才显示
+      const diff = Math.round((meetingDate - today)/86400000);
+      if (diff > 8) continue;
+      CONFIG.rules.forEach(r => {
+        if (m.require && r.type !== 'large') return;      // 必须大会议室
+        if (m.prefer === 'large' && r.type !== 'large' && r.type !== 'special') return; // 优先大
+        const bookingDate = addDays(meetingDate, -r.days);
+        const daysToBook = Math.round((bookingDate - today)/86400000);
+        if (daysToBook < -1 || daysToBook > 7) return;
+        items.push({
+          name: m.name, meetingDate, meetingStr: `${fmtFull(meetingDate)} ${m.start}-${m.end}`,
+          bookingDate, daysToBook, rooms: r.rooms.join('、'), days: r.days,
+          type: r.type, require: m.require, note: m.note
+        });
+      });
+    }
+  });
+  items.sort((a,b) => a.bookingDate - b.bookingDate || (a.type==='large'?-1:1)-(b.type==='large'?-1:1));
+  return items;
+}
+
+// ============================================================
+// 渲染
+// ============================================================
+function itemHTML(it) {
+  const cls = ['item'];
+  if (it.daysToBook === 0) cls.push('urgent');
+  if (it.type === 'large') cls.push('large');
+  const tag = it.type==='large' ? '<span class="tag tag-l">大</span>'
+    : it.type==='special' ? '<span class="tag tag-s">特</span>' : '<span class="tag tag-s">小</span>';
+  const must = it.require ? '<span class="tag tag-must">必须大</span>' : '';
+  const note = it.note ? `<div class="meta">📝 ${it.note}</div>` : '';
+  const when = it.daysToBook === 0 ? '🔥 今天可抢' : it.daysToBook === 1 ? '⏰ 明天可抢' : `⏰ ${it.daysToBook}天后可抢`;
+  return `<div class="${cls.join(' ')}">
+    <div class="name">${it.name} ${tag}${must}</div>
+    <div class="meta">🗓️ ${it.meetingStr}</div>
+    <div class="meta">🚪 ${it.rooms}（提前${it.days}天）${note}</div>
+    <div class="meta" style="color:#e67e22;font-weight:600">${when}</div>
+  </div>`;
+}
+
+function render() {
+  document.getElementById('nowDate').textContent =
+    `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日 ${WEEKDAYS[today.getDay()]}`;
+  const items = calcItems();
+  const todayItems = items.filter(i => i.daysToBook === 0);
+  const tomorrowItems = items.filter(i => i.daysToBook === 1);
+  const weekItems = items.filter(i => i.daysToBook >= 2);
+
+  document.getElementById('todayList').innerHTML = todayItems.length
+    ? todayItems.map(itemHTML).join('') : '<div class="empty">今天没有可预约的会议 🎉</div>';
+  document.getElementById('tomorrowList').innerHTML = tomorrowItems.length
+    ? tomorrowItems.map(itemHTML).join('') : '<div class="empty">明天没有可预约的会议</div>';
+
+  let weekHTML = '';
+  const weekGroup = {};
+  weekItems.forEach(i => { const k = fmtFull(i.bookingDate); (weekGroup[k] = weekGroup[k]||[]).push(i); });
+  Object.keys(weekGroup).forEach(k => {
+    weekHTML += `<div style="margin:8px 0 4px;font-size:.85em;color:#667eea;font-weight:600">📌 ${k}</div>` + weekGroup[k].map(itemHTML).join('');
+  });
+  document.getElementById('weekList').innerHTML = weekHTML || '<div class="empty">未来一周暂无安排</div>';
+}
+
+// ============================================================
+// 倒计时 & 到点闹钟
+// ============================================================
+let notifiedKeys = JSON.parse(localStorage.getItem('mr_notified') || '[]');
+
+function nextAlarmInfo() {
+  // 下一个提醒时间点: 今天22:30/23:50 或 明天00:00（有预约日时才提醒）
+  const items = calcItems();
+  const targets = [];
+  items.forEach(i => {
+    if (i.daysToBook === 0) {  // 今天是预约日
+      targets.push({ t: new Date(today.getFullYear(),today.getMonth(),today.getDate(),22,30), label:'🌙 晚间预告', key:`e_${fmt(i.bookingDate)}` });
+      targets.push({ t: new Date(today.getFullYear(),today.getMonth(),today.getDate(),23,50), label:'🚨 临开抢', key:`f_${fmt(i.bookingDate)}` });
+    }
+    if (i.daysToBook === 0 || i.daysToBook === 1) {
+      const bd = i.bookingDate;
+      targets.push({ t: new Date(bd.getFullYear(),bd.getMonth(),bd.getDate(),0,0), label:'🔥 开抢', key:`b_${fmt(bd)}_${i.name}` });
+    }
+  });
+  const now = new Date();
+  targets.sort((a,b) => a.t - b.t);
+  const next = targets.find(x => x.t >= now);
+  return next || null;
+}
+
+function beep() {
+  try {
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    [880,660,880,660].forEach((f,i) => {
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.frequency.value=f; o.connect(g); g.connect(ctx.destination);
+      const t=ctx.currentTime+i*0.25;
+      g.gain.setValueAtTime(0.35,t);
+      g.gain.exponentialRampToValueAtTime(0.01,t+0.22);
+      o.start(t); o.stop(t+0.22);
+    });
+  } catch(e) {}
+  if (navigator.vibrate) { try { navigator.vibrate([300,150,300,150,300]); } catch(e){} }
+}
+
+function sendNotify(title, body) {
+  try {
+    if (Notification.permission === 'granted') {
+      const n = new Notification(title, { body, tag:'mr_alarm' });
+      setTimeout(() => n.close(), 10000);
+    }
+  } catch(e) {}
+  beep();
+}
+
+function checkAlarm() {
+  const now = new Date();
+  const items = calcItems();
+  items.forEach(i => {
+    if (i.daysToBook === 0) {
+      // 22:30 晚间预告
+      const e = new Date(now.getFullYear(),now.getMonth(),now.getDate(),22,30);
+      if (now >= e && now < addMinutes(e, 5)) fire(`e_${fmt(i.bookingDate)}`, '🌙 明晨可抢 '+i.name, `明天00:00可预约：${i.name} ${i.meetingStr}\n${i.rooms}`);
+      // 23:50 临开抢
+      const f = new Date(now.getFullYear(),now.getMonth(),now.getDate(),23,50);
+      if (now >= f && now < addMinutes(f, 5)) fire(`f_${fmt(i.bookingDate)}`, '🚨 临开抢 '+i.name, `${i.name} 10分钟后开抢！${i.meetingStr}`);
+    }
+    // 00:00 开抢
+    const b = new Date(i.bookingDate.getFullYear(),i.bookingDate.getMonth(),i.bookingDate.getDate(),0,0);
+    if (now >= b && now < addMinutes(b, 30)) fire(`b_${fmt(i.bookingDate)}_${i.name}`, '🔥 开抢 '+i.name, `${i.name} 现在可以抢了！${i.meetingStr}\n可选:${i.rooms}`);
+  });
+}
+function addMinutes(d,m){ const x=new Date(d); x.setMinutes(x.getMinutes()+m); return x; }
+
+function fire(key, title, body) {
+  if (notifiedKeys.includes(key)) return;
+  notifiedKeys.push(key);
+  localStorage.setItem('mr_notified', JSON.stringify(notifiedKeys.slice(-100)));
+  sendNotify(title, body);
+  updateCountdown();
+}
+
+function updateCountdown() {
+  const el = document.getElementById('cdNum');
+  const label = document.getElementById('cdLabel');
+  const sub = document.getElementById('cdSub');
+  const next = nextAlarmInfo();
+  if (!next) {
+    el.textContent = '--:--:--';
+    label.textContent = '📭 近期无抢会议室安排';
+    sub.textContent = '享受安静的一周吧';
+    return;
+  }
+  const diff = next.t - new Date();
+  if (diff <= 0) { el.textContent = '00:00:00'; return; }
+  const h = Math.floor(diff/3600000), m = Math.floor(diff%3600000/60000), s = Math.floor(diff%60000/1000);
+  el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  label.textContent = '⏳ 距离'+next.label;
+  sub.textContent = next.t.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) + ' ' + (next.label.includes('开抢') ? '开放预订' : '提醒');
+}
+
+function enableNotify() {
+  if (!('Notification' in window)) { alert('浏览器不支持通知'); return; }
+  if (Notification.permission === 'granted') { alert('🔔 通知已开启！到点会自动响铃+震动'); beep(); }
+  else Notification.requestPermission().then(p => {
+    if (p === 'granted') { alert('🔔 通知已开启！'); beep(); }
+  });
+}
+
+function testAlarm() { sendNotify('🧪 测试闹钟', '通知+声音+震动测试成功！'); }
+
+// 启动
+render();
+updateCountdown();
+setInterval(updateCountdown, 1000);
+setInterval(checkAlarm, 10000);   // 每10秒检查到点
+setInterval(() => { today.setTime(new Date().setHours(0,0,0,0)); render(); }, 60000);
+</script>
+</body>
+</html>

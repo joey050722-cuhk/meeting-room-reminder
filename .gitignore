@@ -1,0 +1,13 @@
+# 敏感配置（含SendKey/密码，不推送到GitHub）
+config.yaml
+config.yaml.*.bak
+*.bak
+
+# 运行时产物
+__pycache__/
+output/
+assets/
+*.pyc
+cron.log
+test_email_*.eml
+*.eml
