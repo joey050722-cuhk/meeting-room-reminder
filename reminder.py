@@ -877,7 +877,9 @@ $toast = New-BurntToastNotification -Text "{title}", "{message[:150]}" -ErrorAct
             if self.send_wecom(content):
                 sent += 1
         # 微信推送 (Server酱 / PushPlus)
-        if self.config.get('serverchan', {}).get('enabled') or self.config.get('pushplus', {}).get('enabled'):
+        sc_enabled = self.config.get('serverchan', {}).get('enabled') or os.environ.get('SENDKEY')
+pp_enabled = self.config.get('pushplus', {}).get('enabled') or os.environ.get('PUSHPLUS_TOKEN')
+if sc_enabled or pp_enabled:
             meeting_names = '、'.join(sorted(set(r['meeting_name'] for r in todays)))
             title = f"🌙 明晨开抢提醒：{meeting_names}" if phase == 'evening' else f"🚨 临开抢！{meeting_names} 10分钟后开抢"
             if self.send_wechat(title, self._build_wechat_content(todays, phase)):
