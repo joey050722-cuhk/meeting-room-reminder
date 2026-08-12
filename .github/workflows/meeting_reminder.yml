@@ -1,0 +1,27 @@
+name: Meeting Room Reminder
+
+on:
+  schedule:
+    - cron: '30 14 * * *'
+    - cron: '50 15 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pyyaml python-dateutil --quiet
+      - run: cp config.example.yaml config.yaml
+      - env:
+          SENDKEY: ${{ secrets.SENDKEY }}
+        run: |
+          HOUR=$(date -u +%H)
+          if [ "$HOUR" = "14" ]; then PHASE=evening
+          elif [ "$HOUR" = "15" ]; then PHASE=final
+          else PHASE=auto
+          fi
+          python main.py --reminder $PHASE
