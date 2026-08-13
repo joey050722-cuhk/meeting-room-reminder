@@ -325,6 +325,114 @@ class MeetingRoomReminder:
                 })
         
         return slots
+    def format_daily_checklist(self) -> str:
+        """
+        📋 今晚需要预约的会议室清单（用户定制格式）
+        明天00:00要抢的：固定会议大会议室 + 特殊会议 + 备用小会议室
+        """
+        weekday_cn = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        today = datetime.now().date()
+        tomorrow = today + timedelta(days=1)
+        items = []
+
+        # === 1a. 明天可抢的周期性固定会议大会议室 ===
+        for meeting in self.weekly_meetings:
+            mday_of_week = meeting['day_of_week']
+            delta_days = (mday_of_week - today.weekday()) % 7
+            if delta_days == 0:
+                delta_days = 7
+            first_meeting = today + timedelta(days=delta_days)
+            if first_meeting < tomorrow:
+                first_meeting += timedelta(days=7)
+            week_offset = 0
+            while week_offset < 4:
+                meeting_date = first_meeting + timedelta(weeks=week_offset)
+                matched_large = []
+                matched_special = []
+                for rule_name, rule in self.meeting_rules.items():
+                    adv = rule['advance_days']
+                    rtype = rule.get('room_type', 'small')
+                    if meeting_date - timedelta(days=adv) == tomorrow:
+                        rooms_str = '、'.join(rule['rooms'])
+                        if rtype == 'large':
+                            matched_large.append(rooms_str)
+                        elif rtype == 'special':
+                            matched_special.append(rooms_str)
+                if matched_large or matched_special:
+                    rooms_all = matched_large + matched_special
+                    items.append({
+                        'date': meeting_date, 'weekday': weekday_cn[meeting_date.weekday()],
+                        'name': meeting['name'], 'rooms': '；'.join(rooms_all),
+                        'time': f"{meeting['start_time']}-{meeting['end_time']}"
+                    })
+                week_offset += 1
+
+        # === 1b. 明天可抢的特殊会议 ===
+        for meeting in self.special_meetings:
+            try:
+                mdate = datetime.strptime(meeting['date'], '%Y-%m-%d')
+            except Exception:
+                continue
+            matched_large = []
+            matched_special = []
+            for rule_name, rule in self.meeting_rules.items():
+                adv = rule['advance_days']
+                rtype = rule.get('room_type', 'small')
+                if mdate - timedelta(days=adv) == tomorrow:
+                    rooms_str = '、'.join(rule['rooms'])
+                    if rtype == 'large':
+                        matched_large.append(rooms_str)
+                    elif rtype == 'special':
+                        matched_special.append(rooms_str)
+            if matched_large or matched_special:
+                rooms_all = matched_large + matched_special
+                items.append({
+                    'date': mdate, 'weekday': weekday_cn[mdate.weekday()],
+                    'name': meeting['name'], 'rooms': '；'.join(rooms_all),
+                    'time': f"{meeting['start_time']}-{meeting['end_time']}"
+                })
+
+        # === 2. 明天可约的备用小会议室 ===
+        backup_time_str = "11:00-12:00, 15:00-16:00"
+        backup_by_date = {}
+        for rule_name, rule in self.meeting_rules.items():
+            rtype = rule.get('room_type', 'small')
+            if rtype == 'large' or rtype == 'special':
+                continue
+            adv = rule['advance_days']
+            max_date = tomorrow + timedelta(days=adv)
+            if max_date not in backup_by_date:
+                backup_by_date[max_date] = {
+                    'date': max_date, 'weekday': weekday_cn[max_date.weekday()],
+                    'rooms': '、'.join(rule['rooms']), 'time': backup_time_str
+                }
+            else:
+                backup_by_date[max_date]['rooms'] += '；' + '、'.join(rule['rooms'])
+        for d in sorted(backup_by_date.keys()):
+            b = backup_by_date[d]
+            items.append({
+                'date': d, 'weekday': b['weekday'], 'name': '预备会议室',
+                'rooms': b['rooms'], 'time': b['time']
+            })
+
+        # 排序：会议优先，预备在后；同组按日期
+        items.sort(key=lambda x: (x['name'] == '预备会议室', x['date']))
+
+        lines = []
+        lines.append("# 今晚需要预约的会议室清单")
+        lines.append("")
+        if not items:
+            lines.append("（今晚没有需要预约的会议）")
+            lines.append("")
+        else:
+            for i, it in enumerate(items, 1):
+                lines.append(f"{i}. **{it['date']}（{it['weekday']}）｜{it['name']}**")
+                lines.append(f"   - 会议室：{it['rooms']}")
+                lines.append(f"   - 时段：{it['time']}")
+                lines.append("")
+        lines.append("备注：6/7大、3大/培训/瑜伽 提前10天；5大、10-13小 提前7天；4大、5-9小/健身房 提前3天；2-4小 提前1天。")
+        return "\n".join(lines)
+
 
     def format_reminder_text(self, reminders: list) -> str:
         """格式化提醒文本"""
@@ -877,8 +985,7 @@ $toast = New-BurntToastNotification -Text "{title}", "{message[:150]}" -ErrorAct
             content = self._build_wecom_body(todays, phase)
             if self.send_wecom(content):
                 sent += 1
-        # 微信推送 (Server酱 / PushPlus)
-           # 微信推送 (Server酱 / PushPlus) —— 晚间统一发"今晚清单"
+        # 微信推送 (Server酱 / PushPlus) —— 晚间统一发"今晚清单"
     sc_enabled = self.config.get('serverchan', {}).get('enabled') or os.environ.get('SENDKEY')
     pp_enabled = self.config.get('pushplus', {}).get('enabled') or os.environ.get('PUSHPLUS_TOKEN')
     if sc_enabled or pp_enabled:
