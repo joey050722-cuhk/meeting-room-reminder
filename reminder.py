@@ -46,8 +46,9 @@ class MeetingRoomReminder:
             self.config = yaml.safe_load(f)
         
         self.meeting_rules = self.config['meeting_room_rules']
-        self.weekly_meetings = self.config['weekly_meetings']
-        self.settings = self.config['reminder_settings']
+            self.weekly_meetings = self.config['weekly_meetings']
+    self.special_meetings = self.config.get('special_meetings', [])
+    self.settings = self.config['reminder_settings']
 
     def reload_config(self):
         """🔄 实时重新加载配置文件（修改yaml后无需重启即可生效）"""
