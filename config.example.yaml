@@ -76,14 +76,15 @@ weekly_meetings:
   preferred_room_type: any
   fallback_room_type: small
   demand_team: ANC-NPD
-- name: Pre-gate Meeting
-  day_of_week: 1
+- special_meetings:
+- name: pre gate meeting
+  date: '2026-08-25'
   start_time: '15:00'
   end_time: '16:00'
   duration_hours: 1.0
   preferred_room_type: large
   require_large: true
-  notes: Gate会议，必须大会议室
+  notes: 大会，必须大会议室，需提前预约
 - name: Gate Meeting
   day_of_week: 3
   start_time: '15:00'
