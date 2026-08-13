@@ -822,12 +822,12 @@ $toast = New-BurntToastNotification -Text "{title}", "{message[:150]}" -ErrorAct
             print(f"❌ PushPlus发送异常: {e}")
             return False
 
-    def send_wechat(self, title: str, content: str = '') -> bool:
-        """发送微信推送：Server酱 / PushPlus 哪个配了发哪个"""
+        def send_wechat(self, title: str, content: str = '') -> bool:
+        """发送微信推送：Server酱 / PushPlus 哪个配了发哪个（含环境变量，云端场景）"""
         sent = False
-        if self.config.get('serverchan', {}).get('enabled'):
+        if self.config.get('serverchan', {}).get('enabled') or os.environ.get('SENDKEY'):
             sent = self.send_serverchan(title, content) or sent
-        if self.config.get('pushplus', {}).get('enabled'):
+        if self.config.get('pushplus', {}).get('enabled') or os.environ.get('PUSHPLUS_TOKEN'):
             sent = self.send_pushplus(title, content) or sent
         return sent
 
@@ -878,11 +878,16 @@ $toast = New-BurntToastNotification -Text "{title}", "{message[:150]}" -ErrorAct
             if self.send_wecom(content):
                 sent += 1
         # 微信推送 (Server酱 / PushPlus)
-        sc_enabled = self.config.get('serverchan', {}).get('enabled') or os.environ.get('SENDKEY')
-pp_enabled = self.config.get('pushplus', {}).get('enabled') or os.environ.get('PUSHPLUS_TOKEN')
-if sc_enabled or pp_enabled:
+           # 微信推送 (Server酱 / PushPlus) —— 晚间统一发"今晚清单"
+    sc_enabled = self.config.get('serverchan', {}).get('enabled') or os.environ.get('SENDKEY')
+    pp_enabled = self.config.get('pushplus', {}).get('enabled') or os.environ.get('PUSHPLUS_TOKEN')
+    if sc_enabled or pp_enabled:
+        if phase == 'evening':
+            if self.send_wechat("📋 今晚需要预约的会议室清单", self.format_daily_checklist()):
+                sent += 1
+        else:
             meeting_names = '、'.join(sorted(set(r['meeting_name'] for r in todays)))
-            title = f"🌙 明晨开抢提醒：{meeting_names}" if phase == 'evening' else f"🚨 临开抢！{meeting_names} 10分钟后开抢"
+            title = f"🚨 临开抢！{meeting_names} 10分钟后开抢"
             if self.send_wechat(title, self._build_wechat_content(todays, phase)):
                 sent += 1
         # 邮件
