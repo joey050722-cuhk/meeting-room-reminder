@@ -107,16 +107,6 @@ reminder_settings:
     - offset_minutes: 0
     - offset_minutes: 30
     max_attempts: 3
-email:
-  enabled: false
-  smtp_server: smtp.office365.com
-  smtp_port: 587
-  sender: jocelyn.zhong@hh.global
-  password: ''
-  recipients:
-  - jocelyn.zhong@hh.global
-  evening_reminder_time: '22:30'
-  final_reminder_time: '23:50'
 wecom:
   enabled: false
   webhook_url: ''
